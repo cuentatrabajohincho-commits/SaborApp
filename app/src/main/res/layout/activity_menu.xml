@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <TextView
+        android:id="@+id/tvBienvenida"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Bienvenido"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Selecciona una opción"
+        android:textSize="16sp" />
+
+    <Button
+        android:id="@+id/btnPlatos"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="Platos"
+        android:textAllCaps="false" />
+
+    <Button
+        android:id="@+id/btnMesas"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Mesas"
+        android:textAllCaps="false" />
+
+    <Button
+        android:id="@+id/btnPedidos"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Pedidos"
+        android:textAllCaps="false" />
+
+    <Button
+        android:id="@+id/btnReportes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Reportes"
+        android:textAllCaps="false" />
+
+    <Button
+        android:id="@+id/btnSalir"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Salir"
+        android:textAllCaps="false" />
+
+</LinearLayout>
