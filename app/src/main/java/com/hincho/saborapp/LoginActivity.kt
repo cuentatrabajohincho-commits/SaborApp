@@ -9,12 +9,15 @@ import com.hincho.saborapp.databinding.ActivityLoginBinding
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
+    private lateinit var dbHelper: DBHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        dbHelper = DBHelper(this)
 
         binding.btnIngresar.setOnClickListener {
 
@@ -41,20 +44,43 @@ class LoginActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // Login temporal para Sprint 1
-            if (usuario == "admin" && clave == "1234") {
+            // Consultar usuario en SQLite
+            val db = dbHelper.readableDatabase
+
+            val cursor = db.rawQuery(
+                """
+                SELECT usuario, rol
+                FROM usuario
+                WHERE usuario = ? AND clave = ?
+                """.trimIndent(),
+                arrayOf(usuario, clave)
+            )
+
+            if (cursor.moveToFirst()) {
+
+                val usuarioEncontrado =
+                    cursor.getString(cursor.getColumnIndexOrThrow("usuario"))
+
+                val rol =
+                    cursor.getString(cursor.getColumnIndexOrThrow("rol"))
+
+                cursor.close()
+                db.close()
 
                 val intent = Intent(this, MenuActivity::class.java)
 
-                intent.putExtra("usuario", usuario)
-                intent.putExtra("rol", "ADMIN")
+                intent.putExtra("usuario", usuarioEncontrado)
+                intent.putExtra("rol", rol)
 
                 startActivity(intent)
 
-                // Evita regresar al login con el botón Atrás
+                // Evita regresar al Login con el botón Atrás
                 finish()
 
             } else {
+
+                cursor.close()
+                db.close()
 
                 Toast.makeText(
                     this,
