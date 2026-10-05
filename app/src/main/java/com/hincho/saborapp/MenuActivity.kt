@@ -2,11 +2,8 @@ package com.hincho.saborapp
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.hincho.saborapp.databinding.ActivityMenuBinding
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 
 class MenuActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMenuBinding
@@ -20,19 +17,27 @@ class MenuActivity : AppCompatActivity() {
         binding.tvBienvenida.text = "Bienvenido a SaborApp"
 
         binding.btnPlatos.setOnClickListener {
-            // Próximamente: PlatosActivity
+            startActivity(
+                Intent(this, PlatosActivity::class.java)
+            )
         }
 
         binding.btnMesas.setOnClickListener {
-            // Próximamente: MesasActivity
+            startActivity(
+                Intent(this, MesasActivity::class.java)
+            )
         }
 
         binding.btnPedidos.setOnClickListener {
-            // Próximamente: PedidoActivity
+            startActivity(
+                Intent(this, PedidoActivity::class.java)
+            )
         }
 
         binding.btnReportes.setOnClickListener {
-            // Próximamente: ReportesActivity
+            startActivity(
+                Intent(this, ReportesActivity::class.java)
+            )
         }
 
         binding.btnSalir.setOnClickListener {

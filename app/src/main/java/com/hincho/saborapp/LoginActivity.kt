@@ -3,13 +3,11 @@ package com.hincho.saborapp
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.hincho.saborapp.databinding.ActivityLoginBinding
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 
 class LoginActivity : AppCompatActivity() {
+
     private lateinit var binding: ActivityLoginBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,12 +28,12 @@ class LoginActivity : AppCompatActivity() {
             var hayError = false
 
             if (usuario.isEmpty()) {
-                binding.tilUsuario.error = "Ingrese su usuario"
+                binding.tilUsuario.error = getString(R.string.error_usuario)
                 hayError = true
             }
 
             if (clave.isEmpty()) {
-                binding.tilClave.error = "Ingrese su contraseña"
+                binding.tilClave.error = getString(R.string.error_contrasena)
                 hayError = true
             }
 
@@ -43,6 +41,7 @@ class LoginActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
+            // Login temporal para Sprint 1
             if (usuario == "admin" && clave == "1234") {
 
                 val intent = Intent(this, MenuActivity::class.java)
@@ -59,7 +58,7 @@ class LoginActivity : AppCompatActivity() {
 
                 Toast.makeText(
                     this,
-                    "Credenciales incorrectas",
+                    getString(R.string.credenciales_incorrectas),
                     Toast.LENGTH_SHORT
                 ).show()
             }
