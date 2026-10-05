@@ -2,10 +2,12 @@ package com.hincho.saborapp
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.hincho.saborapp.databinding.ActivityMenuBinding
 
 class MenuActivity : AppCompatActivity() {
+
     private lateinit var binding: ActivityMenuBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -14,7 +16,15 @@ class MenuActivity : AppCompatActivity() {
         binding = ActivityMenuBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.tvBienvenida.text = "Bienvenido a SaborApp"
+        binding.tvBienvenida.text = getString(R.string.bienvenido_saborapp)
+
+        // Obtener el rol enviado desde LoginActivity
+        val rol = intent.getStringExtra("rol") ?: "MOZO"
+
+        // Si es MOZO, ocultar Reportes
+        if (rol == "MOZO") {
+            binding.btnReportes.visibility = View.GONE
+        }
 
         binding.btnPlatos.setOnClickListener {
             startActivity(

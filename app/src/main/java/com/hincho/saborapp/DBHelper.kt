@@ -10,7 +10,7 @@ class DBHelper(context: Context) :
     companion object {
 
         private const val DATABASE_NAME = "saborapp.db"
-        private const val DATABASE_VERSION = 1
+        private const val DATABASE_VERSION = 5
 
         const val TABLE_USUARIO = "usuario"
 
@@ -22,6 +22,7 @@ class DBHelper(context: Context) :
 
     override fun onCreate(db: SQLiteDatabase) {
 
+        // Tabla usuario
         val crearTablaUsuario = """
             CREATE TABLE $TABLE_USUARIO (
                 $COL_ID INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -31,24 +32,59 @@ class DBHelper(context: Context) :
             )
         """.trimIndent()
 
-// Usuario administrador inicial
+        db.execSQL(crearTablaUsuario)
+
+        // Tabla plato
+        val crearTablaPlato = """
+            CREATE TABLE plato (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                nombre TEXT NOT NULL,
+                precio REAL NOT NULL,
+                categoria TEXT NOT NULL
+            )
+        """.trimIndent()
+
+        db.execSQL(crearTablaPlato)
+
+        // Platos iniciales
         db.execSQL(
             """
-    INSERT INTO $TABLE_USUARIO 
-    ($COL_USUARIO, $COL_CLAVE, $COL_ROL)
-    VALUES ('admin', '1234', 'ADMIN')
+    INSERT INTO plato (nombre, precio, categoria)
+    VALUES ('Pollo a la brasa', 25.00, 'Platos')
     """.trimIndent()
         )
 
-// Usuario mozo inicial
         db.execSQL(
             """
-    INSERT INTO $TABLE_USUARIO 
-    ($COL_USUARIO, $COL_CLAVE, $COL_ROL)
-    VALUES ('mozo', '1234', 'MOZO')
+    INSERT INTO plato (nombre, precio, categoria)
+    VALUES ('1/4 de pollo', 15.00, 'Platos')
     """.trimIndent()
         )
 
+        db.execSQL(
+            """
+    INSERT INTO plato (nombre, precio, categoria)
+    VALUES ('Chicha morada', 5.00, 'Bebidas')
+    """.trimIndent()
+        )
+
+        // Usuario administrador inicial
+        db.execSQL(
+            """
+            INSERT INTO $TABLE_USUARIO
+            ($COL_USUARIO, $COL_CLAVE, $COL_ROL)
+            VALUES ('admin', '1234', 'ADMIN')
+            """.trimIndent()
+        )
+
+        // Usuario mozo inicial
+        db.execSQL(
+            """
+            INSERT INTO $TABLE_USUARIO
+            ($COL_USUARIO, $COL_CLAVE, $COL_ROL)
+            VALUES ('mozo', '1234', 'MOZO')
+            """.trimIndent()
+        )
     }
 
     override fun onUpgrade(
@@ -56,7 +92,98 @@ class DBHelper(context: Context) :
         oldVersion: Int,
         newVersion: Int
     ) {
-        db.execSQL("DROP TABLE IF EXISTS $TABLE_USUARIO")
-        onCreate(db)
+        if (oldVersion < 2) {
+            db.execSQL(
+                """
+                CREATE TABLE plato (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    nombre TEXT NOT NULL,
+                    precio REAL NOT NULL,
+                    categoria TEXT NOT NULL
+                )
+                """.trimIndent()
+            )
+        }
+
+        if (oldVersion < 3) {
+            db.execSQL(
+                """
+            INSERT INTO plato (nombre, precio, categoria)
+            VALUES ('Pollo a la brasa', 25.00, 'Platos')
+            """.trimIndent()
+            )
+
+            db.execSQL(
+                """
+            INSERT INTO plato (nombre, precio, categoria)
+            VALUES ('1/4 de pollo', 15.00, 'Platos')
+            """.trimIndent()
+            )
+
+            db.execSQL(
+                """
+            INSERT INTO plato (nombre, precio, categoria)
+            VALUES ('Chicha morada', 5.00, 'Bebidas')
+            """.trimIndent()
+            )
+        }
+
+        if (oldVersion < 4) {
+
+            db.execSQL(
+                """
+        CREATE TABLE mesa (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            numero INTEGER NOT NULL UNIQUE,
+            estado TEXT NOT NULL
+        )
+        """.trimIndent()
+            )
+
+            db.execSQL(
+                """
+        INSERT INTO mesa (numero, estado)
+        VALUES (1, 'LIBRE')
+        """.trimIndent()
+            )
+
+            db.execSQL(
+                """
+        INSERT INTO mesa (numero, estado)
+        VALUES (2, 'LIBRE')
+        """.trimIndent()
+            )
+
+            db.execSQL(
+                """
+        INSERT INTO mesa (numero, estado)
+        VALUES (3, 'LIBRE')
+        """.trimIndent()
+            )
+
+            db.execSQL(
+                """
+        INSERT INTO mesa (numero, estado)
+        VALUES (4, 'LIBRE')
+        """.trimIndent()
+            )
+        }
+
+        if (oldVersion < 5) {
+
+            db.execSQL(
+                """
+        CREATE TABLE pedido (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            mesa_id INTEGER NOT NULL,
+            plato_id INTEGER NOT NULL,
+            cantidad INTEGER NOT NULL,
+            estado TEXT NOT NULL,
+            FOREIGN KEY (mesa_id) REFERENCES mesa(id),
+            FOREIGN KEY (plato_id) REFERENCES plato(id)
+        )
+        """.trimIndent()
+            )
+        }
     }
 }
